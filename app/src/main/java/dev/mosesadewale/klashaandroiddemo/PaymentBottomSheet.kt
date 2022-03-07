@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dev.mosesadewale.klashaandroiddemo.databinding.BottomsheetPaymentBinding
 
@@ -11,6 +12,7 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomsheetPaymentBinding? = null
     private val binding get() = _binding!!
+    private val activityViewModel: ActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +30,7 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
+            binding.tvTotal.text = activityViewModel.getCartPrice().toString()
 
 
         }
@@ -37,4 +40,3 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
             _binding = null
         }
     }
-}
