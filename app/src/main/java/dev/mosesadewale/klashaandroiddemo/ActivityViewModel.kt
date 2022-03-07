@@ -11,8 +11,8 @@ import com.klasha.android.model.Currency
 import dev.mosesadewale.klashaandroiddemo.data.Product
 
 class ActivityViewModel: ViewModel() {
-    val name = "Yemi Desola"
-    val email = "ola@klasha.com"
+    val name = "Moses Adewale"
+    val email = "adewale.moses.b@gmail.com"
     val phone = "07032320477"
     val country = Country.NIGERIA
     val sourceCurrency = Currency.NGN
@@ -44,7 +44,7 @@ class ActivityViewModel: ViewModel() {
     fun getCartPrice(): Double{
         var total= 0.0
         cart.value?.forEach {
-            total =  it.price
+            total += it.price
         }
         return total
     }
