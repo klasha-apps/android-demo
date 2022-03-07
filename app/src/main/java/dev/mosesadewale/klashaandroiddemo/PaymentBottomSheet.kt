@@ -1,14 +1,15 @@
 package dev.mosesadewale.klashaandroiddemo
 
+import android.R
 import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
 import com.klasha.android.KlashaSDK
 import com.klasha.android.model.*
 import dev.mosesadewale.klashaandroiddemo.databinding.BottomsheetPaymentBinding
@@ -23,7 +24,7 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = BottomsheetPaymentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,6 +37,7 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
             super.onViewCreated(view, savedInstanceState)
 
             binding.tvTotal.text = activityViewModel.getCartPrice().toString()
+            binding.network.adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, arrayListOf("MTN"))
             activityViewModel.initializeKlasha(requireActivity())
 
             val email = activityViewModel.email
@@ -62,25 +64,25 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
                 toggleProgressBar()
 
                 val card = Card(cardNumber, cardMonth.toInt(), cardYear.toInt(), cardCvv.toInt())
-                val charge = Charge(amount.toDouble(), email, name, card, null, phone)
+                val charge = Charge(amount, email, name, card, null, phone)
 
                 KlashaSDK.chargeCard(charge, object : KlashaSDK.TransactionCallback{
                     override fun error(ctx: Activity, message: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Failed $message", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Failed $message", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun success(ctx: Activity, transactionReference: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Successful $transactionReference", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Successful $transactionReference", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun transactionInitiated(transactionReference: String) {
-                        Snackbar.make(binding.root,"Transaction Initiated $transactionReference", Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),"Transaction Initiated $transactionReference", Toast.LENGTH_LONG).show()
                     }
                 })
             }
@@ -95,19 +97,19 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
                     override fun error(ctx: Activity, message: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Failed $message", Snackbar.LENGTH_INDEFINITE).show()
+                            Toast.makeText(requireContext(),"Transaction Failed $message", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun success(ctx: Activity, bankTransferResponse: BankTransferResp) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Successful $bankTransferResponse", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Successful $bankTransferResponse", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun transactionInitiated(transactionReference: String) {
-                        Snackbar.make(binding.root,"Transaction Initiated $transactionReference", Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),"Transaction Initiated $transactionReference", Toast.LENGTH_LONG).show()
                     }
                 })
             }
@@ -123,20 +125,20 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
                     override fun error(ctx: Activity, message: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Failed $message", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Failed $message", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun success(ctx: Activity, transactionReference: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Successful $transactionReference", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Successful $transactionReference", Toast.LENGTH_LONG).show()
                         }
                     }
 
 
                     override fun transactionInitiated(transactionReference: String) {
-                        Snackbar.make(binding.root,"Transaction Initiated $transactionReference", Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),"Transaction Initiated $transactionReference", Toast.LENGTH_LONG).show()
                     }
                 })
 
@@ -145,7 +147,7 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
             binding.btnMMoney.setOnClickListener {
                 val amount = activityViewModel.getCartPrice()
 
-                val network = binding.network.toString()
+                val network = binding.network.selectedItem.toString()
                 val voucher = binding.voucher.text.toString()
 
                 val mobileMoney = MobileMoney(voucher, Network.valueOf(network))
@@ -157,19 +159,19 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
                     override fun error(ctx: Activity, message: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Failed $message", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Failed $message", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun success(ctx: Activity, transactionReference: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Successful $transactionReference", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Successful $transactionReference", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun transactionInitiated(transactionReference: String) {
-                        Snackbar.make(binding.root,"Transaction Initiated $transactionReference", Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),"Transaction Initiated $transactionReference", Toast.LENGTH_LONG).show()
                     }
                 })
             }
@@ -185,19 +187,19 @@ class PaymentBottomSheet : BottomSheetDialogFragment() {
                     override fun error(ctx: Activity, message: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Failed $message", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Failed $message", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun success(ctx: Activity, transactionReference: String) {
                         ctx.runOnUiThread {
                             toggleProgressBar(false)
-                            Snackbar.make(binding.root,"Transaction Successful $transactionReference", Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Transaction Successful $transactionReference", Toast.LENGTH_LONG).show()
                         }
                     }
 
                     override fun transactionInitiated(transactionReference: String) {
-                        Snackbar.make(binding.root,"Transaction Initiated $transactionReference", Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(),"Transaction Initiated $transactionReference", Toast.LENGTH_LONG).show()
                     }
                 })
 
