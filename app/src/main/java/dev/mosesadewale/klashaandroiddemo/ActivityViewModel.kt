@@ -49,7 +49,9 @@ class ActivityViewModel: ViewModel() {
         return total
     }
 
-    fun initliazeKlasha(activity: Activity){
+    fun initializeKlasha(activity: Activity){
         KlashaSDK.initialize(activity, BuildConfig.KLASHA_AUTH_TOKEN, country, sourceCurrency)
     }
+
+
 }
